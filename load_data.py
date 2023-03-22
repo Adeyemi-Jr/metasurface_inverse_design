@@ -42,14 +42,21 @@ for file_s11, file_mask in zip(s11_filenames,mask_filenames):
         txt = f.read()
     nums = re.findall(r'\[([^][]+)\]', txt)
     arr = np.loadtxt(nums)
-    mask_array = arr.flatten().astype(int).tolist()
+    mask_array = arr.flatten().astype(float).tolist()
     mask_lists.append(mask_array)
 
+
+
+
 s11 = pd.DataFrame(s_11_lists)
-s11.to_csv('../data/processed/s11.csv',index = False)
+s11 = s11.add_prefix('s11_')
 
 mask = pd.DataFrame(mask_lists)
-mask.to_csv('../data/processed/mask.csv', index = False)
+mask = mask.add_prefix('mask_')
+
+data = pd.concat([mask,s11], axis = 1)
+
+data.to_csv('../data/processed/data.csv', index = False)
 
 
 
